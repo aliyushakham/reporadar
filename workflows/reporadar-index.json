@@ -1,0 +1,158 @@
+{
+  "name": "RepoRadar \u2014 index and inspect repository",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "reporadar-scan",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Repository scan webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        200
+      ],
+      "webhookId": "reporadar-scan"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://reporadar:8765/api/scan",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "scan",
+      "name": "Index repository",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        100
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "=http://reporadar:8765/api/snapshot?run={{ $json.run_id }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "snapshot",
+      "name": "Fetch indexed evidence",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const s = $input.first().json; return [{json: {status: 'indexed', run_id: s.run_id, repository: s.name, files: s.file_count, symbols: s.symbols.length, references: s.edges.length, document_sections: s.documents.length, unresolved_calls: s.unresolved.length, warnings: s.warnings, note: 'Snapshot persisted in RepoRadar SQLite; no source was executed.'}}];"
+      },
+      "id": "summary",
+      "name": "Build analysis summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{json: {status: 'failed', error: $input.first().json, action: 'Check RepoRadar health and the shared Docker network; retry manually.'}}];"
+      },
+      "id": "failure",
+      "name": "Explain scan failure",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Index repository",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repository scan webhook": {
+      "main": [
+        [
+          {
+            "node": "Index repository",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Index repository": {
+      "main": [
+        [
+          {
+            "node": "Fetch indexed evidence",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Explain scan failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch indexed evidence": {
+      "main": [
+        [
+          {
+            "node": "Build analysis summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "tags": []
+}

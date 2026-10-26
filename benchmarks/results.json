@@ -1,0 +1,359 @@
+{
+  "scope": "Small author-labeled synthetic fixtures. No external generalization claim.",
+  "methods": {
+    "development": {
+      "identifier": {
+        "queries": 6,
+        "recall@5": 0.25,
+        "mrr@5": 0.3333,
+        "ndcg@5": 0.2689
+      },
+      "bm25": {
+        "queries": 6,
+        "recall@5": 0.6667,
+        "mrr@5": 0.5,
+        "ndcg@5": 0.5436
+      },
+      "hybrid": {
+        "queries": 6,
+        "recall@5": 0.8333,
+        "mrr@5": 0.5833,
+        "ndcg@5": 0.6488
+      }
+    },
+    "evaluation": {
+      "identifier": {
+        "queries": 14,
+        "recall@5": 0.3571,
+        "mrr@5": 0.3036,
+        "ndcg@5": 0.3165
+      },
+      "bm25": {
+        "queries": 14,
+        "recall@5": 0.7857,
+        "mrr@5": 0.75,
+        "ndcg@5": 0.7594
+      },
+      "hybrid": {
+        "queries": 14,
+        "recall@5": 0.8571,
+        "mrr@5": 0.8571,
+        "ndcg@5": 0.8571
+      }
+    }
+  },
+  "errors": [
+    {
+      "split": "development",
+      "method": "identifier",
+      "query": "Где рассчитывается стоимость заказа?",
+      "relevant": [
+        "shop/pricing.py::quote"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "development",
+      "method": "identifier",
+      "query": "How is stock reserved?",
+      "relevant": [
+        "shop/inventory.py::reserve"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "development",
+      "method": "identifier",
+      "query": "Где рассчитывается доставка?",
+      "relevant": [
+        "shop/pricing.py::shipping"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "development",
+      "method": "identifier",
+      "query": "How is the customer notified?",
+      "relevant": [
+        "shop/notifications.py::confirmation"
+      ],
+      "retrieved": [
+        "README.md:29"
+      ]
+    },
+    {
+      "split": "development",
+      "method": "bm25",
+      "query": "Где рассчитывается стоимость заказа?",
+      "relevant": [
+        "shop/pricing.py::quote"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "development",
+      "method": "bm25",
+      "query": "How is stock reserved?",
+      "relevant": [
+        "shop/inventory.py::reserve"
+      ],
+      "retrieved": [
+        "shop/inventory.py::available",
+        "shop/inventory.py::reserve",
+        "shop/checkout.py::checkout",
+        "shop/api.py::submit_order",
+        "README.md:19"
+      ]
+    },
+    {
+      "split": "development",
+      "method": "bm25",
+      "query": "Где рассчитывается доставка?",
+      "relevant": [
+        "shop/pricing.py::shipping"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "development",
+      "method": "bm25",
+      "query": "How is the customer notified?",
+      "relevant": [
+        "shop/notifications.py::confirmation"
+      ],
+      "retrieved": [
+        "README.md:29",
+        "shop/notifications.py::confirmation",
+        "shop/api.py::submit_order",
+        "README.md:7"
+      ]
+    },
+    {
+      "split": "development",
+      "method": "hybrid",
+      "query": "Где рассчитывается стоимость заказа?",
+      "relevant": [
+        "shop/pricing.py::quote"
+      ],
+      "retrieved": [
+        "README.md:7",
+        "shop/checkout.py::checkout",
+        "shop/pricing.py::discount",
+        "README.md:12",
+        "shop/api.py::submit_order"
+      ]
+    },
+    {
+      "split": "development",
+      "method": "hybrid",
+      "query": "How is stock reserved?",
+      "relevant": [
+        "shop/inventory.py::reserve"
+      ],
+      "retrieved": [
+        "shop/inventory.py::available",
+        "shop/inventory.py::reserve",
+        "shop/checkout.py::checkout",
+        "shop/api.py::submit_order",
+        "README.md:19"
+      ]
+    },
+    {
+      "split": "development",
+      "method": "hybrid",
+      "query": "Где рассчитывается доставка?",
+      "relevant": [
+        "shop/pricing.py::shipping"
+      ],
+      "retrieved": [
+        "docs/development.md:3",
+        "shop/pricing.py::shipping",
+        "shop/pricing.py::quote",
+        "README.md:12"
+      ]
+    },
+    {
+      "split": "development",
+      "method": "hybrid",
+      "query": "How is the customer notified?",
+      "relevant": [
+        "shop/notifications.py::confirmation"
+      ],
+      "retrieved": [
+        "README.md:29",
+        "shop/notifications.py::confirmation",
+        "shop/api.py::submit_order",
+        "README.md:7"
+      ]
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Search the catalog by title",
+      "relevant": [
+        "library/catalog.py::find_book"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Validate reader access token",
+      "relevant": [
+        "library/accounts.py::authenticate"
+      ],
+      "retrieved": [
+        "README.md:13"
+      ]
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Calculate overdue return fees",
+      "relevant": [
+        "library/accounts.py::late_fee"
+      ],
+      "retrieved": [
+        "library/service.py::return_book"
+      ]
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Authenticate search and create a reservation",
+      "relevant": [
+        "library/service.py::borrow"
+      ],
+      "retrieved": [
+        "library/accounts.py::authenticate"
+      ]
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Accept a returned book",
+      "relevant": [
+        "library/service.py::return_book"
+      ],
+      "retrieved": [
+        "README.md:3",
+        "library/catalog.py::find_book",
+        "library/catalog.py::reserve_book",
+        "library/service.py::return_book"
+      ]
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Where is the overdue charge documented?",
+      "relevant": [
+        "README.md:8"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Where are unknown tokens described?",
+      "relevant": [
+        "README.md:13"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Где проверяется токен?",
+      "relevant": [
+        "library/accounts.py::authenticate"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "Где рассчитывается штраф за опоздание?",
+      "relevant": [
+        "library/accounts.py::late_fee"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "evaluation",
+      "method": "identifier",
+      "query": "How is a library member verified?",
+      "relevant": [
+        "library/accounts.py::authenticate"
+      ],
+      "retrieved": [
+        "README.md:1"
+      ]
+    },
+    {
+      "split": "evaluation",
+      "method": "bm25",
+      "query": "Close a loan after returning a book",
+      "relevant": [
+        "library/accounts.py::close_loan"
+      ],
+      "retrieved": [
+        "README.md:8",
+        "library/accounts.py::close_loan",
+        "library/service.py::return_book",
+        "library/catalog.py::find_book",
+        "library/catalog.py::reserve_book"
+      ]
+    },
+    {
+      "split": "evaluation",
+      "method": "bm25",
+      "query": "Где проверяется токен?",
+      "relevant": [
+        "library/accounts.py::authenticate"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "evaluation",
+      "method": "bm25",
+      "query": "Где рассчитывается штраф за опоздание?",
+      "relevant": [
+        "library/accounts.py::late_fee"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "evaluation",
+      "method": "bm25",
+      "query": "How is a library member verified?",
+      "relevant": [
+        "library/accounts.py::authenticate"
+      ],
+      "retrieved": [
+        "README.md:1",
+        "library/catalog.py::reserve_book"
+      ]
+    },
+    {
+      "split": "evaluation",
+      "method": "hybrid",
+      "query": "Где рассчитывается штраф за опоздание?",
+      "relevant": [
+        "library/accounts.py::late_fee"
+      ],
+      "retrieved": []
+    },
+    {
+      "split": "evaluation",
+      "method": "hybrid",
+      "query": "How is a library member verified?",
+      "relevant": [
+        "library/accounts.py::authenticate"
+      ],
+      "retrieved": [
+        "README.md:1",
+        "library/catalog.py::reserve_book"
+      ]
+    }
+  ]
+}

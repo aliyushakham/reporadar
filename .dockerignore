@@ -1,0 +1,6 @@
+.git
+.venv
+.reporadar
+__pycache__
+*.sqlite*
+.env*

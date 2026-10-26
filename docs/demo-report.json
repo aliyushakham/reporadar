@@ -1,0 +1,195 @@
+{
+  "symbol": {
+    "id": "shop/pricing.py::discount",
+    "name": "discount",
+    "qualname": "discount",
+    "qualified": "shop.pricing.discount",
+    "module": "shop.pricing",
+    "path": "shop/pricing.py",
+    "line": 8,
+    "end_line": 10,
+    "kind": "function",
+    "signature": "discount(total, loyalty=False)",
+    "docstring": "Apply a ten percent loyalty discount to the order price.",
+    "source": "def discount(total, loyalty=False):\n    \"\"\"Apply a ten percent loyalty discount to the order price.\"\"\"\n    return total // 10 if loyalty else 0",
+    "fingerprint": "dbe2348922d00aedf7a100b361401917110f9f786342e8fd784b23d13d7237cc"
+  },
+  "direction": "callers",
+  "depth": 5,
+  "affected": [
+    {
+      "symbol": {
+        "id": "shop/pricing.py::quote",
+        "name": "quote",
+        "qualname": "quote",
+        "qualified": "shop.pricing.quote",
+        "module": "shop.pricing",
+        "path": "shop/pricing.py",
+        "line": 18,
+        "end_line": 22,
+        "kind": "function",
+        "signature": "quote(items, loyalty=False)",
+        "docstring": "Compute the final order total including discount and shipping.",
+        "source": "def quote(items, loyalty=False):\n    \"\"\"Compute the final order total including discount and shipping.\"\"\"\n    base = subtotal(items)\n    discounted = base - discount(base, loyalty)\n    return discounted + shipping(discounted)",
+        "fingerprint": "19db3508ffc825b7e6e6e175531af1409c77341dc7f0c388ca4038233ed2c5bc"
+      },
+      "distance": 1,
+      "evidence": [
+        {
+          "source": "shop/pricing.py::quote",
+          "line": 21,
+          "expression": "discount",
+          "reason": "lexical name",
+          "target": "shop/pricing.py::discount"
+        }
+      ]
+    },
+    {
+      "symbol": {
+        "id": "shop/checkout.py::checkout",
+        "name": "checkout",
+        "qualname": "checkout",
+        "qualified": "shop.checkout.checkout",
+        "module": "shop.checkout",
+        "path": "shop/checkout.py",
+        "line": 7,
+        "end_line": 14,
+        "kind": "function",
+        "signature": "checkout(items, stock, token, loyalty=False)",
+        "docstring": "Place an order: reserve stock, calculate total, charge and notify.",
+        "source": "def checkout(items, stock, token, loyalty=False):\n    \"\"\"Place an order: reserve stock, calculate total, charge and notify.\"\"\"\n    reserve(stock, items)\n    amount = quote(items, loyalty)\n    receipt = charge(amount, token)\n    order = {\"items\": items, \"receipt\": receipt}\n    order[\"message\"] = confirmation(order)\n    return order",
+        "fingerprint": "8124f1512298961536bd4d284039a2b892d7f48a7f390a0bc6f0ec552146695d"
+      },
+      "distance": 2,
+      "evidence": [
+        {
+          "source": "shop/pricing.py::quote",
+          "line": 21,
+          "expression": "discount",
+          "reason": "lexical name",
+          "target": "shop/pricing.py::discount"
+        },
+        {
+          "source": "shop/checkout.py::checkout",
+          "line": 10,
+          "expression": "quote",
+          "reason": "explicit import",
+          "target": "shop/pricing.py::quote"
+        }
+      ]
+    },
+    {
+      "symbol": {
+        "id": "shop/api.py::submit_order",
+        "name": "submit_order",
+        "qualname": "submit_order",
+        "qualified": "shop.api.submit_order",
+        "module": "shop.api",
+        "path": "shop/api.py",
+        "line": 5,
+        "end_line": 7,
+        "kind": "function",
+        "signature": "submit_order(payload, stock)",
+        "docstring": "Handle the order endpoint and submit the customer basket.",
+        "source": "def submit_order(payload, stock):\n    \"\"\"Handle the order endpoint and submit the customer basket.\"\"\"\n    return checkout(payload[\"items\"], stock, payload[\"token\"], payload.get(\"loyalty\", False))",
+        "fingerprint": "245254aaafc0c659726908e4c0ef38c955a5b1cb2bb3af39bb1077777622ec4b"
+      },
+      "distance": 3,
+      "evidence": [
+        {
+          "source": "shop/pricing.py::quote",
+          "line": 21,
+          "expression": "discount",
+          "reason": "lexical name",
+          "target": "shop/pricing.py::discount"
+        },
+        {
+          "source": "shop/checkout.py::checkout",
+          "line": 10,
+          "expression": "quote",
+          "reason": "explicit import",
+          "target": "shop/pricing.py::quote"
+        },
+        {
+          "source": "shop/api.py::submit_order",
+          "line": 7,
+          "expression": "checkout",
+          "reason": "explicit import",
+          "target": "shop/checkout.py::checkout"
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "README.md:12",
+      "path": "README.md",
+      "title": "Price calculation",
+      "line": 12,
+      "end_line": 18,
+      "text": "## Price calculation\n\n`quote` computes `subtotal`, applies `discount` and adds `shipping`.\nLoyalty customers receive a 10% discount. Free shipping starts at 300000 cents\n**after** the discount. Changes to `discount` can affect `quote`, `checkout`, and\n`submit_order` through the static call graph.",
+      "kind": "document",
+      "score": 8.70412,
+      "matched_terms": [
+        "discount",
+        "loyalty",
+        "order",
+        "price"
+      ]
+    },
+    {
+      "id": "README.md:7",
+      "path": "README.md",
+      "title": "Order lifecycle",
+      "line": 7,
+      "end_line": 11,
+      "text": "## Order lifecycle\n\n`submit_order` calls `checkout`. Checkout reserves inventory, obtains a price quote,\ncreates a payment receipt and formats a customer confirmation.",
+      "kind": "document",
+      "score": 4.59942,
+      "matched_terms": [
+        "order",
+        "price"
+      ]
+    },
+    {
+      "id": "docs/development.md:8",
+      "path": "docs/development.md",
+      "title": "Example request",
+      "line": 8,
+      "end_line": 14,
+      "text": "## Example request\n\n```python\n# This is a comment in a code block, not a Markdown heading.\nsubmit_order({\"items\": [], \"token\": \"demo\"}, {})\n```",
+      "kind": "document",
+      "score": 0.85382,
+      "matched_terms": [
+        "order"
+      ]
+    },
+    {
+      "id": "README.md:24",
+      "path": "README.md",
+      "title": "Payments and refunds",
+      "line": 24,
+      "end_line": 28,
+      "text": "## Payments and refunds\n\n`charge` returns a fictional receipt. `cancel_order` calls `refund`.\nNo real payment API is used, and no credentials are needed.",
+      "kind": "document",
+      "score": 0.79012,
+      "matched_terms": [
+        "order"
+      ]
+    },
+    {
+      "id": "docs/development.md:3",
+      "path": "docs/development.md",
+      "title": "Changing delivery policy",
+      "line": 3,
+      "end_line": 7,
+      "text": "## Changing delivery policy\n\nReview `shipping` when changing the delivery fee or the free-shipping threshold.\nUse RepoRadar's incoming references to inspect the affected order pipeline.",
+      "kind": "document",
+      "score": 0.72271,
+      "matched_terms": [
+        "order"
+      ]
+    }
+  ],
+  "caveat": "Static references only. Dynamic dispatch, runtime data flow and completeness are not guaranteed."
+}

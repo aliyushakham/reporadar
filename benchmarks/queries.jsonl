@@ -1,0 +1,20 @@
+{"query":"discount", "split":"development", "relevant":["shop/pricing.py::discount"]}
+{"query":"Где рассчитывается стоимость заказа?", "split":"development", "relevant":["shop/pricing.py::quote"]}
+{"query":"How is stock reserved?", "split":"development", "relevant":["shop/inventory.py::reserve"]}
+{"query":"How do I refund a payment?", "split":"development", "relevant":["shop/payments.py::refund", "shop/api.py::cancel_order"]}
+{"query":"Где рассчитывается доставка?", "split":"development", "relevant":["shop/pricing.py::shipping"]}
+{"query":"How is the customer notified?", "split":"development", "relevant":["shop/notifications.py::confirmation"]}
+{"query":"find_book", "split":"evaluation", "relevant":["library/catalog.py::find_book"]}
+{"query":"Search the catalog by title", "split":"evaluation", "relevant":["library/catalog.py::find_book"]}
+{"query":"How many copies are available to borrow?", "split":"evaluation", "relevant":["library/catalog.py::available_copies"]}
+{"query":"Reserve a book for a reader", "split":"evaluation", "relevant":["library/catalog.py::reserve_book"]}
+{"query":"Validate reader access token", "split":"evaluation", "relevant":["library/accounts.py::authenticate"]}
+{"query":"Calculate overdue return fees", "split":"evaluation", "relevant":["library/accounts.py::late_fee"]}
+{"query":"Close a loan after returning a book", "split":"evaluation", "relevant":["library/accounts.py::close_loan"]}
+{"query":"Authenticate search and create a reservation", "split":"evaluation", "relevant":["library/service.py::borrow"]}
+{"query":"Accept a returned book", "split":"evaluation", "relevant":["library/service.py::return_book"]}
+{"query":"Where is the overdue charge documented?", "split":"evaluation", "relevant":["README.md:8"]}
+{"query":"Where are unknown tokens described?", "split":"evaluation", "relevant":["README.md:13"]}
+{"query":"Где проверяется токен?", "split":"evaluation", "relevant":["library/accounts.py::authenticate"]}
+{"query":"Где рассчитывается штраф за опоздание?", "split":"evaluation", "relevant":["library/accounts.py::late_fee"]}
+{"query":"How is a library member verified?", "split":"evaluation", "relevant":["library/accounts.py::authenticate"]}

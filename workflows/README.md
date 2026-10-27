@@ -51,3 +51,17 @@ migrate node settings on import.
 
 Reference: [n8n Docker installation](https://docs.n8n.io/hosting/installation/docker/),
 [HTTP Request node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/).
+
+## Reproduce the CLI verification
+
+With the RepoRadar service running on the Compose network:
+
+```bash
+docker compose run --rm --no-deps -v "$PWD/workflows:/workflows:ro" n8n import:workflow --input=/workflows/reporadar-index.json
+docker compose run --rm --no-deps n8n execute --id=RepoRadarIndex --rawOutput
+```
+
+The included `versionId` is required by the n8n 2.0.0 CLI importer. The CLI may log a
+missing old workflow while attempting to clear its webhooks on first import; confirm
+that it ends with `Successfully imported 1 workflow`. The sample uses JavaScript
+Code nodes and does not require n8n's optional Python task runner.

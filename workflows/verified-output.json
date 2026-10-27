@@ -1,0 +1,12 @@
+{
+  "status": "indexed",
+  "run_id": 2,
+  "repository": "shop",
+  "files": 9,
+  "symbols": 12,
+  "references": 10,
+  "document_sections": 10,
+  "unresolved_calls": 5,
+  "warnings": [],
+  "note": "Snapshot persisted in RepoRadar SQLite; no source was executed."
+}

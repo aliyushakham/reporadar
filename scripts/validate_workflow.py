@@ -6,6 +6,9 @@ workflow = json.loads((root/'workflows/reporadar-index.json').read_text())
 names = {node['name'] for node in workflow['nodes']}
 assert len(names) == len(workflow['nodes'])
 assert not workflow['active']
+assert workflow['id'] == 'RepoRadarIndex'
+import uuid
+uuid.UUID(workflow['versionId'])
 for source, outputs in workflow['connections'].items():
     assert source in names
     for branch in outputs['main']:

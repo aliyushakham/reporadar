@@ -4,8 +4,9 @@ on:
   pull_request:
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         python: ['3.9', '3.12', '3.13']
     steps:
@@ -20,7 +21,7 @@ jobs:
       - run: python scripts/validate_workflow.py
       - run: reporadar --db /tmp/radar.sqlite scan examples/shop
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - run: docker build -t reporadar:test .

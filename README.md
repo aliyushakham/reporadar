@@ -61,7 +61,7 @@ Optional installation: `python3 -m pip install .` exposes the `reporadar` comman
 ### A 2-minute demo
 
 1. Launch the included MiniShop example.
-2. Click **Расчёт скидки**; inspect source lines and affected callers.
+2. Click **Где рассчитывается скидка?**; inspect source lines and affected callers.
 3. Click **Price calculation** to read the original Markdown section.
 4. Change `total // 10` to `total // 5` in `examples/shop/shop/pricing.py`.
 5. Click **Re-index**, open **Snapshot history**, compare the earlier snapshot to current.

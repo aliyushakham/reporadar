@@ -76,7 +76,7 @@ function selectDocument(id) {
 }
 async function search() {
   const query=$('query').value.trim();
-  if(!query){status('Введи вопрос или имя функции.');return;}
+  if(!query){status('Поле поиска пустое. Напиши вопрос или нажми на пример под строкой поиска.');$('query').focus();return;}
   const data=await api('/api/search?'+new URLSearchParams({q:query,method:$('method').value,run:snapshot.run_id}));
   $('results-panel').hidden=false; $('results-count').textContent=data.length+' MATCHES';
   $('results').innerHTML=data.map(r=>`<button class="result" ${r.kind==='code'?'data-symbol':'data-doc'}="${escapeHtml(r.id)}"><span class="badge">${r.kind.toUpperCase()}</span><span class="result-title">${escapeHtml(r.title)}</span><div class="result-meta">${escapeHtml(r.path)}:${r.line} · score ${r.score.toFixed(2)} · ${escapeHtml(r.matched_terms.join(', '))}</div><div class="result-excerpt">${escapeHtml(r.text.slice(0,350))}</div></button>`).join('')||'<p class="hint">Нет совпадений. Попробуй имя функции или английские термины. Поиск не генерирует ответ при отсутствии доказательств.</p>';
